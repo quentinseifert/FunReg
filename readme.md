@@ -1,8 +1,7 @@
 # First-Order Gradient Based Functional Regression
 
-This repository contains described in the working paper entitled "First-Order Gradient Based Functional Regression
-". It contains code for generating simulated datasets from different functional settings,
-as well as the code for fitting the respective models.
+This repository contains code described in the working paper entitled "First-Order Gradient Based Functional Regression".
+Getting cleaned up, reworked and restructured at the moment.
 
 
 **sim_code**: contains code necessary for the simulation

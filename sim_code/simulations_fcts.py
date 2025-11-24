@@ -165,17 +165,13 @@ def fit_lin(i, N=100, dummy=False):
 
 
 
-    with open(f"sim_results/lin_{N}_{i}.pkl", "wb") as file:
-        pickle.dump(main_model.weights, file)
+    # with open(f"sim_results/lin_{N}_{i}.pkl", "wb") as file:
+    #    pickle.dump(main_model.weights, file)
     metrics = [logger.RMSE, logger.ll, logger.AIC, logger.BIC, end - start]
     K.clear_session()
     del main_model
     gc.collect()
     print(logger.outer)
-    return metrics
-    del spline, spline_x, logger, dataset
-
-    return main_model, metrics, end-start, plot_lines
     return metrics
 
 
@@ -206,23 +202,13 @@ def fit_smooth(i, N=100, forplot=False, dummy=False):
     main_model = SuperModel([model1, model2], data.shape[0], categorical=False, dist="Normal")
     main_model.compile(optimizer=Adam(0.01), loss=negloglik)
     main_model(design)
-    if dummy:
-        with open("sim_results/smoo_10000_98.pkl", "rb") as f:
-            weights= pickle.load(f)
-        main_model.set_weights(weights)
-        main_model.fit(design, y, epochs=0, callbacks=[logger], batch_size=int((N * 100) / (1000)))
-    else:
-        main_model.fit(design, y, epochs=1000, callbacks=[logger], batch_size=int((N * 100) / (100)))
+
+    main_model.fit(design, y, epochs=1000, callbacks=[logger], batch_size=int((N * 100) / (100)))
     end = time.time()
 
-    #edfs = np.sum(logger.edfs_old[0])
-    #ll = tf.reduce_sum(main_model(design).log_prob(y))
-    #AIC = 2 * -ll + 2 * edfs
-    #BIC = 2 * -ll + np.log(N * 100) * edfs
-    #RMSE = np.sqrt(np.mean((main_model(design).mean() - y) ** 2))
 
-    with open(f"sim_results/smooth_{N}_{i}.pkl", "wb") as file:
-        pickle.dump(main_model.weights, file)
+    #with open(f"sim_results/smooth_{N}_{i}.pkl", "wb") as file:
+    #    pickle.dump(main_model.weights, file)
     metrics = [logger.RMSE, logger.ll, logger.AIC, logger.BIC, end - start]
     K.clear_session()
     del main_model
@@ -255,8 +241,6 @@ def fit_beta(i, N=100):
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(1000)
     logger = LossLog_simplerer(dataset=dataset, huge=False, tolerance=0, outer_max=10)
 
-    # main_model = SuperModel([embedding, model1, model2], N, categorical=True)
-
 
     main_model = SuperModel([model1, model2], data.shape[0], categorical=False, dist="Beta")
     main_model.compile(optimizer=Adam(0.01), loss=negloglik)
@@ -265,15 +249,8 @@ def fit_beta(i, N=100):
     end = time.time()
 
 
-
-    #edfs = np.sum(logger.edfs_old[0])
-    #ll = tf.reduce_sum(main_model(design).log_prob(y))
-    #AIC = 2 * -ll + 2 * edfs
-    #BIC = 2 * -ll + np.log(N * 100) * edfs
-    #RMSE = np.sqrt(np.mean((main_model(design).mean() - y) ** 2))
-
-    with open(f"sim_results/smoo_{N}_{i}.pkl", "wb") as file:
-        pickle.dump(main_model.weights, file)
+    #with open(f"sim_results/smoo_{N}_{i}.pkl", "wb") as file:
+    #    pickle.dump(main_model.weights, file)
     metrics = [logger.RMSE, logger.ll, logger.AIC, logger.BIC, end - start]
     K.clear_session()
     del main_model

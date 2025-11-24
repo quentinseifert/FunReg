@@ -306,33 +306,24 @@ class LossLog_simplerer(tf.keras.callbacks.Callback):
             self.count = 0
             self.epoch_losses = []
 
-
-
-
-
     def on_train_end(self, logs):
-        ll = 0.
-        y = []
-        y_preds = []
-        X = []
-        grads = []
+
+        x_s, y_s = [], []
         for x_batch, y_batch in self.dataset:
-            y.append(y_batch)
-            x_batch, y_batch = (tf.cast(x_batch[0], "float32"), tf.cast(x_batch[1], "float32")), tf.cast(y_batch, "float32")
-            with tf.GradientTape() as tape:
-                eta = self.model.linear_predictor(x_batch)
-                y_pred = self.model.to_dist(eta)
-                loss = self.model.compiled_loss(y_batch, y_pred)
-                grad = tape.gradient(loss, eta)
-                ll += loss
-                y_preds.append(y_pred.mean())
-                X.append(x_batch)
-                grads.append(grad)
-#
-        y_pred = tf.concat(y_preds, 1)
-        y = tf.concat(y, 1)
-        X = (tf.concat([xb[0] for xb in X], 0), tf.concat([xb[1] for xb in X], 0))
-        grads = (tf.concat([g[0] for g in grads], 0), tf.concat([g[1] for g in grads], 0))
+            x_s.append(x_batch)
+            y_s.append(y_batch)
+        printvar = tf.print("yes")
+        design1 = tf.concat([x[0] for x in x_s], axis=0)
+        design2 = tf.concat([x[1] for x in x_s], axis=0)
+        X = (design1, design2)
+
+
+        y = tf.concat(y_s, axis=0)
+        with tf.GradientTape() as tape:
+            eta = self.model.linear_predictor(X)
+            y_pred = self.model.to_dist(eta)
+            loss = self.model.compiled_loss(y, y_pred)
+            grads = tape.gradient(loss, eta)
 
 
         K1 = self.model.models[0].penalty_matrix.matrix()
@@ -346,11 +337,14 @@ class LossLog_simplerer(tf.keras.callbacks.Callback):
         edf1 = np.trace(np.linalg.inv(tf.transpose(X[0]) * np.square(grads[0].numpy().ravel())  @ X[0] + K1) @ tf.transpose(X[0]) * np.square(grads[0].numpy().ravel())  @ X[0])
         edf2 = np.trace(np.linalg.inv(tf.transpose(X[1]) * np.square(grads[1].numpy().ravel())  @ X[1] + K2) @ tf.transpose(X[1]) * np.square(grads[1].numpy().ravel())  @ X[1])
         self.edfs = [edf1, edf2]
-        self.AIC = 2 * ll + 2 * np.sum(self.edfs)
-        self.BIC = 2 * ll + np.log(self.model.N * 100) * np.sum(self.edfs)
-        self.RMSE = np.sqrt(np.mean((y_pred - y) ** 2))
-        self.ll = ll
+        self.AIC = 2 * loss + 2 * np.sum(self.edfs)
+        self.BIC = 2 * loss + np.log(self.model.N * 100) * np.sum(self.edfs)
+        self.RMSE = np.sqrt(np.mean((y_pred.mean() - y) ** 2))
+        self.ll = loss
 
 
 
 
+
+def negloglik(y_true, y_pred):
+    return -tf.reduce_sum(y_pred.log_prob(y_true))
