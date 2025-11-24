@@ -79,7 +79,7 @@ lin10000 <- round(colMeans(do.call(rbind, lapply(results_lin[["10000"]], unlist)
 results[["smoo"]] <- list()
 for (n in c("100", "1000", "10000")){
   results[["smoo"]][[n]] <- list()
-  for (i in 17:99){
+  for (i in 0:99){
     df <- csv_to_fct(paste0("sim_data/smoo", n, "/", "df", i, ".csv"), setting = "smoo")
     start <- Sys.time()
     mod <- pffr(y ~ x + s(x2), yind = t, data = df)
@@ -104,7 +104,7 @@ save(results_smoo, file="R_smoo_results.Rda")
 results[["beta"]] <- list()
 for (n in c("1000","10000")){
   results[["beta"]][[n]] <- list()
-  for (i in 69:99){
+  for (i in 0:99){
     df <- csv_to_fct(paste0("sim_data/beta", n, "/", "df", i, ".csv"), setting="beta")
     start <- Sys.time()
     df$y <- (df$y * (as.numeric(n)*100 - 1) + 0.5) / (as.numeric(n)*100)
@@ -127,7 +127,6 @@ results_beta <- results[["beta"]]
 results_beta <- results[["beta"]]
 
 save(results_beta, file="sim_results/R_beta_results.Rda")
-load("sim_results/R_beta_results.Rda")
 
 beta100 <- do.call(rbind, lapply(results_beta[["100"]], unlist)) 
 beta1000 <- do.call(rbind, lapply(results_beta[["1000"]], unlist)) 
@@ -136,35 +135,5 @@ beta10000 <- do.call(rbind, lapply(results_beta[["10000"]], unlist))
 round(colMeans(beta10000), 4)
 
 
-data <- read.csv(paste0("sim_data/beta", n, "/", "df", i, ".csv"))
-start <- Sys.time()
-mod <- gam(y ~ s(t) + s(t, by=x, k=5) + ti(x2, t, k=c(8, 5)), data=data, family="betar")
-end <- Sys.time()
-
-re
 
 
-metrics <- round(colMeans(do.call(rbind, lapply(results[["smoo"]][[n]], unlist))), 4)
-
-
-
-
-
-
-
-alpha <- mod$fitted.values * mod$family$getTheta(TRUE)
-beta <- (1-mod$fitted.values) * mod$family$getTheta(TRUE)
-y <- mod$y
-
-
-dfbet <- read.csv("sanity_beta.csv", row.names = 1)
-alpha1 <- dfbet$a
-beta1 <- dfbet$b
-y <- dfbet$y
-loglik <- sum(
-  (alpha - 1) * log(y) + 
-    (beta - 1) * log(1 - y) - 
-    (lgamma(alpha) + lgamma(beta) - lgamma(alpha + beta))
-)
-loglik
-logLik(mod)
