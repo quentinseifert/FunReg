@@ -22,9 +22,9 @@ the according \texttt{mgcv} implementation.
 + TPSplines
 
 *multivariate smoothers*:
-+ TPSplines: technically usable for any **`d` ``, really only case **`d=2` `` considered
++ TPSplines: technically usable for any `d` , really only case `d=2`  considered
 + TeProductSpline: takes two uncentered univariate splines, creates basis from row-wise Kronecker.
- Used for estimating margins + interaction (**`s(x1) + s(x2) + s(x1, x2)` ``)
+ Used for estimating margins + interaction (`s(x1) + s(x2) + s(x1, x2)` )
 + TiProductSpline: Takes centered Splines, only for interaction
 
 *discrete smoothers*:
