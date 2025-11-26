@@ -4,6 +4,13 @@ This repository contains code described in the working paper entitled "First-Ord
 Getting cleaned up, reworked and restructured at the moment.
 
 
+To be able to run the code, I recommend to create and activate a virtual environment and then run
+```` 
+pip install -r requirements.txt
+````
+(requirements.txt might be a little bloated).
+
+## Code:
 **sim_code**: contains code necessary for the simulation
 + simulation_fcts.py: functions for generating data and fitting models
 + sim_datasets.py: generates datasets, saves them in *sim_data/*
