@@ -1,10 +1,10 @@
 import pickle
 import sys
-sys.path.append("sim_code")
+from bricks import *
 from deepdl.splines import *
 from deepdl.model_bricks import *
 import numpy as np
-from simulations_fcts import *
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.use("TkAgg")
@@ -15,8 +15,8 @@ tf.config.run_functions_eagerly(False)
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 100):
-        fits.append(fit_smooth(i, N=N))
+    for i in range(0, 10):
+        fits.append(fit_lin(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}linlong.pkl", "wb") as f:
         pickle.dump(metrics, f)
@@ -24,7 +24,7 @@ for N in [100, 1000, 10000]:
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 100):
+    for i in range(0, 10):
         fits.append(fit_smooth(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}smoothlong.pkl", "wb") as f:
@@ -36,7 +36,7 @@ for N in [100, 1000, 10000]:
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 100):
+    for i in range(0, 10):
         fits.append(fit_beta(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}betalong.pkl", "wb") as f:

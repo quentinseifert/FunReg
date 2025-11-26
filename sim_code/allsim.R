@@ -54,7 +54,7 @@ t <- seq(0, 1, length.out=100)
 
 results <- list()
 results[["lin"]] <- list()
-for (n in c("1000")){
+for (n in c("100")){
   results[["lin"]][[n]] <- list()
     for (i in 0:99){
       df <- csv_to_fct(paste0("sim_data/lin", n, "/", "df", i, ".csv"), setting = "lin")

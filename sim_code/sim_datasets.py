@@ -7,9 +7,13 @@ over simulation functions. Files are written to "./sim_data"
 
 
 import sys
-sys.path.append("sim_code")
-from simulations_fcts import *
-for i in range(100):
+from pathlib import Path
+
+
+from bricks import *
+
+
+for i in range(10):
     sim_function_lin(100, seed=i)
     sim_function_lin(1000, seed=i)
     sim_function_lin(10000, seed=i)
