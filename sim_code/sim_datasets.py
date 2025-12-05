@@ -13,7 +13,7 @@ from pathlib import Path
 from bricks import *
 
 
-for i in range(10):
+for i in range(100):
     sim_function_lin(100, seed=i)
     sim_function_lin(1000, seed=i)
     sim_function_lin(10000, seed=i)

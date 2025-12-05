@@ -2,7 +2,6 @@ import pickle
 import sys
 from bricks import *
 from deepdl.splines import *
-from deepdl.model_bricks import *
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -15,7 +14,7 @@ tf.config.run_functions_eagerly(False)
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 10):
+    for i in range(0, 100):
         fits.append(fit_lin(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}linlong.pkl", "wb") as f:
@@ -24,7 +23,7 @@ for N in [100, 1000, 10000]:
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 10):
+    for i in range(0, 100):
         fits.append(fit_smooth(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}smoothlong.pkl", "wb") as f:
@@ -36,7 +35,7 @@ for N in [100, 1000, 10000]:
 
 for N in [100, 1000, 10000]:
     fits = []
-    for i in range(0, 10):
+    for i in range(0, 100):
         fits.append(fit_beta(i, N=N))
     metrics = np.array([fit for fit in fits])
     with open(f"sim_results/fits_{N}betalong.pkl", "wb") as f:
