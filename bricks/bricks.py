@@ -97,9 +97,10 @@ class PenaltyMatrix(tf.keras.Model):
 
 
 class RegressionModel(tf.keras.Model):
-    def __init__(self, penalty, constant=False):
+    def __init__(self, penalty, seed, constant=False):
         super().__init__()
-        self.linear = tf.keras.layers.Dense(1, use_bias=True, dtype="float32")
+        self.linear = tf.keras.layers.Dense(1, use_bias=True, dtype="float32", kernel_initializer=tf.keras.initializers.GlorotUniform(seed=seed),
+            bias_initializer=tf.keras.initializers.Zeros())
         self.penalty_matrix = penalty
         self.constant = constant
 

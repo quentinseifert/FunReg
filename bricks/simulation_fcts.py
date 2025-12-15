@@ -12,7 +12,7 @@ import os.path
 import pickle
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+#sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 
 import numpy as np
@@ -155,8 +155,8 @@ def fit_lin(i, N=100, dummy=False):
     design = (tf.cast(design1, "float32"), design2)
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(100)
     logger = LossLog_simplerer(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
-    model1 = RegressionModel(penalty1)
-    model2 = RegressionModel(penalty2, constant=True)
+    model1 = RegressionModel(penalty1, seed=i)
+    model2 = RegressionModel(penalty2, constant=True, seed=i+1000)
     main_model = MainModel([model1, model2], data.shape[0], categorical=False, dist="Normal")
     main_model.compile(optimizer=Adam(0.01), loss=negloglik)
     main_model(design)
@@ -192,8 +192,8 @@ def fit_smooth(i, N=100, forplot=False, dummy=False):
     penalty1 = PenaltyMatrix([spline_t.penalty, spline_t_lin.penalty], ti_penalties=[spline_ti.penalty],
                              reg_param=[100., 100., 100., 100.])
     penalty2 = PenaltyMatrix([np.array([[0.]])], reg_param=[0.])
-    model1 = RegressionModel(penalty1)
-    model2 = RegressionModel(penalty2, constant=True)
+    model1 = RegressionModel(penalty1, seed=i)
+    model2 = RegressionModel(penalty2, constant=True, seed=i+1000)
     y = tf.cast(np.expand_dims(data.y, 1), "float32")
     design = (tf.cast(design1, "float32"), design2)
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(100)
@@ -234,8 +234,8 @@ def fit_beta(i, N=100):
     penalty1 = PenaltyMatrix([spline_t.penalty, spline_t_lin.penalty], ti_penalties=[spline_ti.penalty],
                              reg_param=[100., 100., 100., 100.])
     penalty2 = PenaltyMatrix([np.array([[0.]])], reg_param=[0.])
-    model1 = RegressionModel(penalty1)
-    model2 = RegressionModel(penalty2, constant=True)
+    model1 = RegressionModel(penalty1, seed=i)
+    model2 = RegressionModel(penalty2, constant=True, seed=i+1000)
     y = (np.expand_dims(data.beta, 1) * (N*100 - 1) + 0.5) / (N*100)
     #y = np.clip(np.expand_dims(data.beta, 1), np.finfo(np.float64).eps, np.finfo(np.float64).eps)
     y = tf.cast(y, "float32")
