@@ -39,7 +39,7 @@ the according \texttt{mgcv} implementation.
 + `MRFSmooth`: basis is an indicator matrix for discrete regional units, penalty created from list of spatial polygons as
  neighborhood structure
 
-**bricks.py**: code used for the keras models used in this project, contains the "heart" of this project. Classes used for 
+**bricks/**: code used for the keras models used in this project, contains the "heart" of this project. Classes used for 
 estimation of regression models (very much prototypes rather than finished generally usable classes). 
 + `PenaltyMatrix`: Inherits from tf.keras.Model, needs to be initialized with penalty matrices from smooth terms. Makes use of
  `tf.linalg` for more efficient construction and use of block diagonals and such. Within fitting process, calculates penalty
