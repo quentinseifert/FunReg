@@ -16,6 +16,11 @@ pip install -r requirements.txt
 + sim_datasets.py: generates datasets, saves them in *sim_data/*
 + sim_study.py: runs the estimations, saves the results in *sim_results/*
 
+To run the simulation study:
+```` 
+python -m sim_code.sim_study
+````
+
 **deepdl/**: contains codes for smoothers used in this project (and more). Will be refined  
 and written as its own repo soon
 
