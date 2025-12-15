@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from simulations_fcts import *
+from bricks import *
 
 x = np.linspace(-3, 3, 100)
 t = np.linspace(0, 1, 100)
