@@ -51,16 +51,23 @@ csv_to_fct <- function(path, setting) {
 
 t <- seq(0, 1, length.out=100)
 
-
+if(!file.exists("sim_results/lines")) {
+  dir.create(("sim_results/lines"))
+}
 results <- list()
 results[["lin"]] <- list()
-for (n in c("100")){
+for (n in c("100", "1000", "10000")){
   results[["lin"]][[n]] <- list()
     for (i in 0:99){
       df <- csv_to_fct(paste0("sim_data/lin", n, "/", "df", i, ".csv"), setting = "lin")
       start <- Sys.time()
       mod <- pffr(y ~ x , yind = t, data = df)
       end <- Sys.time()
+      if (n=="100") {
+        t_line <- predict(mod, type="terms", newdata = data.frame(x=1))[[1]][1, ]
+        x_line <- predict(mod, type="terms", newdata = data.frame(x=1))[[2]][1, ]
+        write.csv(x = data.frame(t, t_line, x_line), file=paste0("sim_results/lines/line", i, ".csv"))
+      }
       results[["lin"]][[n]][[i+1]] <- list(rmse=mean((mod$fitted.values - mod$y)**2)**.5, aic=AIC(mod), BIC(mod), logLik(mod), t=end-start)
     }
 }
@@ -91,7 +98,6 @@ for (n in c("100", "1000", "10000")){
 
 
 
-results=list()
 results_smoo <- results[["smoo"]]
 smoo100 <- round(colMeans(do.call(rbind, lapply(results_smoo[["100"]], unlist))), 4)[c(1, 4, 2, 3)]
 smoo1000 <- round(colMeans(do.call(rbind, lapply(results_smoo[["1000"]], unlist))), 4)[c(1, 4, 2, 3)]
@@ -102,7 +108,7 @@ smoo10000 <- round(colMeans(do.call(rbind, lapply(results_smoo[["10000"]], unlis
 save(results_smoo, file="R_smoo_results.Rda")
 
 results[["beta"]] <- list()
-for (n in c("1000","10000")){
+for (n in c("100", "1000", "10000")){
   results[["beta"]][[n]] <- list()
   for (i in 0:99){
     df <- csv_to_fct(paste0("sim_data/beta", n, "/", "df", i, ".csv"), setting="beta")
@@ -116,7 +122,7 @@ for (n in c("1000","10000")){
     ll_false <- logLik(mod)
     Aic <- -2 * ll + 2* df
     Bic <- -2 * ll + 2 * log(as.numeric(n) * 100) 
-    results[["beta"]][[n]][[i+1]] <- list(rmse=mean((mod$fitted.values - mod$y)**2)**.5, ll=ll, aic=Aic, bic=Bic, t=end-start, ll_false=ll_false)
+    results[["beta"]][[n]][[i+1]] <- list(rmse=mean((mod$fitted.values - mod$y)**2)**.5, ll=ll, aic=Aic, bic=Bic, t=end-start)
   }
 }
 results_beta <- results[["beta"]]
@@ -132,8 +138,41 @@ beta100 <- do.call(rbind, lapply(results_beta[["100"]], unlist))
 beta1000 <- do.call(rbind, lapply(results_beta[["1000"]], unlist)) 
 beta10000 <- do.call(rbind, lapply(results_beta[["10000"]], unlist)) 
 
+round(colMeans(beta100), 4)
+round(colMeans(beta1000), 4)
 round(colMeans(beta10000), 4)
 
 
 
+time_frame <-
+  data.frame(
+    lin = c
+    (mean(unlist((
+      do.call(rbind, results_lin[["100"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_lin[["1000"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_lin[["10000"]])
+    )[, 5]))),
+    smooth =
+      c
+    (mean(unlist((
+      do.call(rbind, results_smoo[["100"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_smoo[["1000"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_smoo[["10000"]])
+    )[, 5]))),
+    beta =
+      c
+    (mean(unlist((
+      do.call(rbind, results_beta[["100"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_beta[["1000"]])
+    )[, 5])), mean(unlist((
+      do.call(rbind, results_beta[["10000"]])
+    )[, 5])))
+  )
+
+write.csv("sim_results/r_times.csv", x=time_frame)
 

@@ -135,7 +135,7 @@ class MainModel(tf.keras.Model):
         if self.dist == "Normal":
             return tfd.Normal(loc=outs[0], scale=tf.exp(outs[1]))
         if self.dist == "Beta":
-            con0 =tf.math.softplus(outs[1])
+            con0 = tf.math.softplus(outs[1])
             z = tf.math.sigmoid(outs[0])
             #con1 = (-z * con0) / (z - 1)
             alpha = z * con0
@@ -189,7 +189,7 @@ class MainModel(tf.keras.Model):
 
 
 
-class LossLog_simplerer(tf.keras.callbacks.Callback):
+class LossLog(tf.keras.callbacks.Callback):
     def __init__(self, dataset, tolerance=10, outer_max=5, huge=False, out_name="smoothing_bigly", n_samples=10):
         super().__init__()
         self.epoch_losses = []

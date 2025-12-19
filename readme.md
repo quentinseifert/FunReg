@@ -16,9 +16,12 @@ pip install -r requirements.txt
 + sim_datasets.py: generates datasets, saves them in *sim_data/*
 + sim_study.py: runs the estimations, saves the results in *sim_results/*
 
-To run the simulation study:
+To run the simulation study and get the plots:
 ```` 
 python -m sim_code.sim_study
+python -m sim_code.sim_plots
+python -m sim_code.time_plot
+
 ````
 
 **deepdl/**: contains codes for smoothers used in this project (and more). Will be refined  
@@ -53,7 +56,7 @@ estimation of regression models (very much prototypes rather than finished gener
  if not desired, needs to be a dummy with zeros. If only a contant parameter is to be estimated, rather than an actual 
  regression model, use ´constant=True´. Initialized with PenaltyMatrix-objects
 + `MainModel`: Takes RegressionModels as input and is the object that actually gets trained. Has own `train_step()`-method for
-calculating penalized loss. Distributions are hard-coded at the moment.
-+ `LossLog_simplerer`: Inherits from tf.keras.Callback. In spirit an extension of EarlyStopping. Checks whether loss converges,
+calculating penalized loss. Distributions are hard-coded at the moment. Allows for gamlss-style models as it is written now.
++ `LossLog`: Inherits from tf.keras.Callback. In spirit an extension of EarlyStopping. Checks whether loss converges,
  once a pre-specified number of epochs does not improve, updates the smoothing parameters as described in paper. Achieves this 
  pretty efficiently and elegantly using np.einsum.

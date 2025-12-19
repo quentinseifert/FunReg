@@ -154,7 +154,7 @@ def fit_lin(i, N=100, dummy=False):
     y = tf.cast(np.expand_dims(data.y, 1), "float32")
     design = (tf.cast(design1, "float32"), design2)
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(100)
-    logger = LossLog_simplerer(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
+    logger = LossLog(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
     model1 = RegressionModel(penalty1, seed=i)
     model2 = RegressionModel(penalty2, constant=True, seed=i+1000)
     main_model = MainModel([model1, model2], data.shape[0], categorical=False, dist="Normal")
@@ -167,8 +167,8 @@ def fit_lin(i, N=100, dummy=False):
 
 
 
-    # with open(f"sim_results/lin_{N}_{i}.pkl", "wb") as file:
-    #    pickle.dump(main_model.weights, file)
+    with open(f"sim_results/lin_{N}_{i}.pkl", "wb") as file:
+       pickle.dump(main_model.weights, file)
     metrics = [logger.RMSE, logger.ll, logger.AIC, logger.BIC, end - start]
     K.clear_session()
     del main_model
@@ -197,7 +197,7 @@ def fit_smooth(i, N=100, forplot=False, dummy=False):
     y = tf.cast(np.expand_dims(data.y, 1), "float32")
     design = (tf.cast(design1, "float32"), design2)
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(100)
-    logger = LossLog_simplerer(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
+    logger = LossLog(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
 
     # main_model = MainModel([embedding, model1, model2], N, categorical=True)
 
@@ -209,8 +209,8 @@ def fit_smooth(i, N=100, forplot=False, dummy=False):
     end = time.time()
 
 
-    #with open(f"sim_results/smooth_{N}_{i}.pkl", "wb") as file:
-    #    pickle.dump(main_model.weights, file)
+    with open(f"sim_results/smooth_{N}_{i}.pkl", "wb") as file:
+        pickle.dump(main_model.weights, file)
     metrics = [logger.RMSE, logger.ll, logger.AIC, logger.BIC, end - start]
     K.clear_session()
     del main_model
@@ -241,7 +241,7 @@ def fit_beta(i, N=100):
     y = tf.cast(y, "float32")
     design = (tf.cast(design1, "float32"), design2)
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(1000)
-    logger = LossLog_simplerer(dataset=dataset, huge=False, tolerance=0, outer_max=10)
+    logger = LossLog(dataset=dataset, huge=False, tolerance=0, outer_max=10)
 
 
     main_model = MainModel([model1, model2], data.shape[0], categorical=False, dist="Beta")
