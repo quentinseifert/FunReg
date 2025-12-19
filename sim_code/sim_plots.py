@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+
 import os
 if not os.path.exists("paper_plots"):
     os.makedirs("paper_plots")

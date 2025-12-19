@@ -1,13 +1,9 @@
-import pickle
-import sys
+
 from bricks import *
-from deepdl.splines import *
 import numpy as np
 
-import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.use("TkAgg")
-import time
 np.set_printoptions(suppress=True)
 tf.config.run_functions_eagerly(False)
 

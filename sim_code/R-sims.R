@@ -105,7 +105,7 @@ smoo10000 <- round(colMeans(do.call(rbind, lapply(results_smoo[["10000"]], unlis
 
 
 
-save(results_smoo, file="R_smoo_results.Rda")
+save(results_smoo, file="sim_results/R_smoo_results.Rda")
 
 results[["beta"]] <- list()
 for (n in c("100", "1000", "10000")){

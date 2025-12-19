@@ -8,40 +8,24 @@ sim_datasets.py, functions name fit_something fit models based on the simulated 
 
 
 
-import os.path
-import pickle
-import sys
-from pathlib import Path
-#sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-
-import numpy as np
-import pandas as pd
 from bricks import *
 from deepdl.splines import *
 import scipy.stats as stats
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import os
 import tensorflow as tf
-import tensorflow.keras as keras
 import tensorflow_probability as tfp
 import time
-from scipy.spatial import distance_matrix
-from sympy.physics.quantum import TensorProduct
 
 
 
 mpl.use("TkAgg")
 
 
-from tensorflow.keras import backend as K
 import gc
-#from mat_utils import *
-#import torch
+
 import tensorflow.keras.backend as K
-#import tensorflow_addons as tfa
 tfd = tfp.distributions
-#import rpy2.robjects as robjects
 
 
 import numpy as np
