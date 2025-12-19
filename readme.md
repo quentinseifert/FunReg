@@ -4,7 +4,14 @@ This repository contains code described in the working paper entitled "First-Ord
 Getting cleaned up, reworked and restructured at the moment.
 
 
-To be able to run the code, I recommend to create and activate a virtual environment and then run
+To be able to run the code, I recommend to create and activate a virtual environment, for example using
+````
+python3 -m venv env
+
+source env/bin/activate
+````
+and then running
+
 ```` 
 pip install -r requirements.txt
 ````
