@@ -18,6 +18,7 @@ pip install -r requirements.txt
 
 To run the simulation study and get the plots:
 ```` 
+python -m sim_code.sim_datasets
 python -m sim_code.sim_study
 python -m sim_code.sim_plots
 python -m sim_code.time_plot

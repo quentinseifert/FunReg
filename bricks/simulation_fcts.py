@@ -47,10 +47,10 @@ tfd = tfp.distributions
 import numpy as np
 
 
-def interaction_effect(x, y, marginal=False):
+def interaction_effect(x, y):
 
 
-    x_scaled = x * 10 - 5  # linear mapping
+    x_scaled = x * 10 - 5
 
 
     spacing = 4.0
@@ -61,7 +61,6 @@ def interaction_effect(x, y, marginal=False):
     beta = 0.1
 
     z = 0.0
-    # Loop over centers
     for i in np.arange(-5, 6, spacing):
         for j in np.arange(-5, 6, spacing):
             y_shifted = j + drift * i

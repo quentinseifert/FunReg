@@ -114,8 +114,8 @@ ax[0, 1].set_xlabel(r"$t$")
 ax[1, 1].set_xlabel(r"$t$")
 
 ax[0, 0].set_title(r"GDFR")
-ax[1, 0].set_title(r"GDFR")
-ax[0, 1].set_title(r"refund")
+ax[0, 1].set_title(r"GDFR")
+ax[1, 0].set_title(r"refund")
 ax[1, 1].set_title(r"refund")
 
 ax[0, 0].set_ylabel(r"$\beta_0(t)$")
