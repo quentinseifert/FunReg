@@ -109,7 +109,6 @@ def sim_function_smoo(N, seed=123):
     if not os.path.exists(f"./sim_data/smoo{N}/"):
         os.makedirs(f"./sim_data/smoo{N}/")
     df.to_csv(f"sim_data/smoo{N}/df{seed}.csv")
-    # cleanup
 
     return pd.DataFrame(np.array([y.flatten(), t.flatten(), np.repeat(x, 100),np.repeat(x2, 100), eta.flatten()]).T, columns=["y", "t", "x", "x2", "eta"])
 
@@ -198,7 +197,6 @@ def fit_smooth(i, N=100, forplot=False, dummy=False):
     dataset = tf.data.Dataset.from_tensor_slices((design, y)).batch(100)
     logger = LossLog(dataset=dataset, huge=False, tolerance=0, outer_max=10, n_samples=5)
 
-    # main_model = MainModel([embedding, model1, model2], N, categorical=True)
 
     main_model = MainModel([model1, model2], data.shape[0], categorical=False, dist="Normal")
     main_model.compile(optimizer=Adam(0.01), loss=negloglik)

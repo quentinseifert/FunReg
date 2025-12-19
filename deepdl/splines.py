@@ -182,10 +182,7 @@ class TPSplines:
         ET = np.column_stack([E, T])
         y_fitted = intercept + ET @ self.uncentered_gammas
         if d == 1:
-            # if statement to see whether the plot method is called from GAM or the smoother:
-            # if it is from GAM, there is subplot in which to plot, if there is no subplot,
-            # just do plt.plot
-            # same for every smoother
+
             if ax is None:
                 if plot_analytical:
                     y_plot = intercept + ET @ self.UZ @ self.center_mat @ self.analytical_gammas
